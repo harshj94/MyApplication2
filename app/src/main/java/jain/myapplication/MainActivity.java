@@ -42,7 +42,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        
+        train_number = (EditText) findViewById(R.id.trainnumber);
+        date = (EditText) findViewById(R.id.date);
+        source = (EditText) findViewById(R.id.source);
+        destination = (EditText) findViewById(R.id.destination);
+        classs = (EditText) findViewById(R.id.classs);
+        quota = (EditText) findViewById(R.id.quota);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.drawer_item_fullscreen_drawer);
@@ -84,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<TrainAvailability> call = apiService.getAvailabilityDetails("12264", "NZM", "PUNE", "12-09-2016", "3A", "GN");
+            Call<TrainAvailability> call = apiService.getAvailabilityDetails(train_number.getText().toString().trim(), source.getText().toString().toUpperCase().trim(), destination.getText().toString().toUpperCase().trim(), date.getText().toString().trim(), classs.getText().toString().toLowerCase().trim(), quota.getText().toString().toLowerCase().trim());
             call.enqueue(new Callback<TrainAvailability>() {
                 @Override
                 public void onResponse(Call<TrainAvailability> call, Response<TrainAvailability> response) {
