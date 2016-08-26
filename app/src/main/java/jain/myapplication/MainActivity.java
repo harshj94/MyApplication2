@@ -6,6 +6,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,8 +35,7 @@ public class MainActivity extends AppCompatActivity {
     TextView textView;
     String myapikey;
     EditText train_number, date, source, destination, classs, quota;
-
-    //save our header or result
+    Button getAvailability;
     private Drawer result = null;
 
     @Override
@@ -48,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
         destination = (EditText) findViewById(R.id.destination);
         classs = (EditText) findViewById(R.id.classs);
         quota = (EditText) findViewById(R.id.quota);
+        getAvailability = (Button) findViewById(R.id.get);
+        textView = (TextView) findViewById(R.id.textt);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -86,49 +89,51 @@ public class MainActivity extends AppCompatActivity {
 
         myapikey = "vdtqp7326";
 
-        textView = (TextView) findViewById(R.id.text);
 
-        try {
-            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<TrainAvailability> call = apiService.getAvailabilityDetails(train_number.getText().toString().trim(), source.getText().toString().toUpperCase().trim(), destination.getText().toString().toUpperCase().trim(), date.getText().toString().trim(), classs.getText().toString().toLowerCase().trim(), quota.getText().toString().toLowerCase().trim());
-            call.enqueue(new Callback<TrainAvailability>() {
-                @Override
-                public void onResponse(Call<TrainAvailability> call, Response<TrainAvailability> response) {
-                    Availability[] availabilities = response.body().getAvailability();
-                    String s = "";
-                    for (Availability availability : availabilities) {
-                        s = s + (availability.getDate() + "\t" + availability.getStatus() + "\n");
-                    }
-                    textView.setText(s);
-                }
+        getAvailability.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+                    Call<TrainAvailability> call = apiService.getAvailabilityDetails(train_number.getText().toString().trim(), source.getText().toString().toUpperCase().trim(), destination.getText().toString().toUpperCase().trim(), date.getText().toString().trim(), classs.getText().toString().toLowerCase().trim(), quota.getText().toString().toLowerCase().trim());
+                    call.enqueue(new Callback<TrainAvailability>() {
+                        @Override
+                        public void onResponse(Call<TrainAvailability> call, Response<TrainAvailability> response) {
+                            Toast.makeText(MainActivity.this, "1", Toast.LENGTH_SHORT).show();
+                            Availability[] availabilities = response.body().getAvailability();
+                            String s = "";
+                            for (Availability availability : availabilities) {
+                                s = s + (availability.getDate() + "\t" + availability.getStatus() + "\n");
+                            }
+                            textView.setText(s);
+                        }
 
-                @Override
-                public void onFailure(Call<TrainAvailability> call, Throwable t) {
-                    textView.setText(t.getMessage());
-                    Log.e(TAG, t.toString());
+                        @Override
+                        public void onFailure(Call<TrainAvailability> call, Throwable t) {
+                            Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                            textView.setText(t.getMessage());
+                            Log.e(TAG, t.toString());
+                        }
+                    });
+                } catch (Exception e) {
+                    Toast.makeText(MainActivity.this, "3", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    textView.setText(e.getMessage());
                 }
-            });
-        } catch (Exception e) {
-            Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-            textView.setText(e.getMessage());
-        }
+            }
+        });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -138,7 +143,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        //handle the back press :D close the drawer first and if the drawer is closed close the activity
         if (result != null && result.isDrawerOpen()) {
             result.closeDrawer();
         } else {

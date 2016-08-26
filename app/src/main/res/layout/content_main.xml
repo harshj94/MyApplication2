@@ -63,9 +63,10 @@
         android:text="Get Availability" />
 
     <TextView
-        android:id="@+id/text"
+        android:id="@+id/textt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/get"
+        android:text="Harsh"
         android:layout_marginTop="10dp" />
 </RelativeLayout>
