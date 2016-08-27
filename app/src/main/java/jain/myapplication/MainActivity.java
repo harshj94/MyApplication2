@@ -3,14 +3,12 @@ package jain.myapplication;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -21,8 +19,8 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 
-import jain.myapplication.model.Availability;
-import jain.myapplication.model.TrainAvailability;
+import jain.myapplication.model.Train;
+import jain.myapplication.model.TrainBetweenStations;
 import jain.myapplication.rest.ApiClient;
 import jain.myapplication.rest.ApiInterface;
 import retrofit2.Call;
@@ -93,33 +91,53 @@ public class MainActivity extends AppCompatActivity {
         getAvailability.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-                    Call<TrainAvailability> call = apiService.getAvailabilityDetails(train_number.getText().toString().trim(), source.getText().toString().toUpperCase().trim(), destination.getText().toString().toUpperCase().trim(), date.getText().toString().trim(), classs.getText().toString().toLowerCase().trim(), quota.getText().toString().toLowerCase().trim());
-                    call.enqueue(new Callback<TrainAvailability>() {
-                        @Override
-                        public void onResponse(Call<TrainAvailability> call, Response<TrainAvailability> response) {
-                            Toast.makeText(MainActivity.this, "1", Toast.LENGTH_SHORT).show();
-                            Availability[] availabilities = response.body().getAvailability();
-                            String s = "";
-                            for (Availability availability : availabilities) {
-                                s = s + (availability.getDate() + "\t" + availability.getStatus() + "\n");
-                            }
-                            textView.setText(s);
-                        }
+//                try {
+//                    ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+//                    Call<TrainAvailability> call = apiService.getAvailabilityDetails(train_number.getText().toString().trim(), source.getText().toString().toUpperCase().trim(), destination.getText().toString().toUpperCase().trim(), date.getText().toString().trim(), classs.getText().toString().toLowerCase().trim(), quota.getText().toString().toLowerCase().trim());
+//                    call.enqueue(new Callback<TrainAvailability>() {
+//                        @Override
+//                        public void onResponse(Call<TrainAvailability> call, Response<TrainAvailability> response) {
+//                            Toast.makeText(MainActivity.this, "1", Toast.LENGTH_SHORT).show();
+//                            Availability[] availabilities = response.body().getAvailability();
+//                            String s = "";
+//                            for (Availability availability : availabilities) {
+//                                s = s + (availability.getDate() + "\t" + availability.getStatus() + "\n");
+//                            }
+//                            textView.setText(s);
+//                        }
+//
+//                        @Override
+//                        public void onFailure(Call<TrainAvailability> call, Throwable t) {
+//                            Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+//                            textView.setText(t.getMessage());
+//                            Log.e(TAG, t.toString());
+//                        }
+//                    });
+//                } catch (Exception e) {
+//                    Toast.makeText(MainActivity.this, "3", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+//                    textView.setText(e.getMessage());
+//                }
 
-                        @Override
-                        public void onFailure(Call<TrainAvailability> call, Throwable t) {
-                            Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-                            textView.setText(t.getMessage());
-                            Log.e(TAG, t.toString());
+                ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+                Call<TrainBetweenStations> call2 = apiService.getTrainBetweenStations(source.getText().toString().toUpperCase().trim(), destination.getText().toString().toUpperCase().trim(), date.getText().toString().trim());
+                call2.enqueue(new Callback<TrainBetweenStations>() {
+                    @Override
+                    public void onResponse(Call<TrainBetweenStations> call, Response<TrainBetweenStations> response) {
+                        Train[] trains = response.body().getTrain();
+                        String s = "";
+                        for (Train train : trains) {
+                            s = s + (train.getName() + "\n");
                         }
-                    });
-                } catch (Exception e) {
-                    Toast.makeText(MainActivity.this, "3", Toast.LENGTH_SHORT).show();
-                    Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                    textView.setText(e.getMessage());
-                }
+                        textView.setText(s);
+                    }
+
+                    @Override
+                    public void onFailure(Call<TrainBetweenStations> call, Throwable t) {
+
+                    }
+                });
+
             }
         });
     }

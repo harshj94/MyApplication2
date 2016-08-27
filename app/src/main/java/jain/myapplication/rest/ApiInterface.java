@@ -1,6 +1,7 @@
 package jain.myapplication.rest;
 
 import jain.myapplication.model.TrainAvailability;
+import jain.myapplication.model.TrainBetweenStations;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -14,4 +15,9 @@ public interface ApiInterface {
                                                    @Path("date") String date,
                                                    @Path("classtype") String classtype,
                                                    @Path("quota") String quota);
+
+    @GET("between/source/{source}/dest/{destination}/date/{date}/apikey/vdtqp7326")
+    Call<TrainBetweenStations> getTrainBetweenStations(@Path("source") String source,
+                                                       @Path("destination") String destination,
+                                                       @Path("date") String date);
 }

@@ -3,8 +3,7 @@ package jain.myapplication.model;
 /**
  * Created by harsh on 12-Aug-16.
  */
-public class To
-{
+public class To {
     private String name;
 
     private String lng;
@@ -13,49 +12,40 @@ public class To
 
     private String lat;
 
-    public String getName ()
-    {
+    public String getName() {
         return name;
     }
 
-    public void setName (String name)
-    {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public String getLng ()
-    {
+    public String getLng() {
         return lng;
     }
 
-    public void setLng (String lng)
-    {
+    public void setLng(String lng) {
         this.lng = lng;
     }
 
-    public String getCode ()
-    {
+    public String getCode() {
         return code;
     }
 
-    public void setCode (String code)
-    {
+    public void setCode(String code) {
         this.code = code;
     }
 
-    public String getLat ()
-    {
+    public String getLat() {
         return lat;
     }
 
-    public void setLat (String lat)
-    {
+    public void setLat(String lat) {
         this.lat = lat;
     }
 
     @Override
-    public String toString()
-    {
-        return "ClassPojo [name = "+name+", lng = "+lng+", code = "+code+", lat = "+lat+"]";
+    public String toString() {
+        return "ClassPojo [name = " + name + ", lng = " + lng + ", code = " + code + ", lat = " + lat + "]";
     }
 }
