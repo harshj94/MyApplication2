@@ -13,17 +13,9 @@
     tools:showIn="@layout/activity_main">
 
     <EditText
-        android:id="@+id/trainnumber"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Train Number"
-        android:inputType="number" />
-
-    <EditText
         android:id="@+id/source"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/trainnumber"
         android:hint="Source Station" />
 
     <EditText
@@ -35,38 +27,16 @@
 
     <EditText
         android:id="@+id/date"
+        android:focusableInTouchMode="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/destination"
         android:hint="Date" />
 
-    <EditText
-        android:id="@+id/classs"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/date"
-        android:hint="Class 2S/SL/CC/3A/2A/1A" />
-
-    <EditText
-        android:id="@+id/quota"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/classs"
-        android:hint="Generally GN"
-        android:text="GN" />
-
     <Button
         android:id="@+id/get"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/quota"
+        android:layout_below="@id/date"
         android:text="Get Availability" />
-
-    <TextView
-        android:id="@+id/textt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/get"
-        android:text="Harsh"
-        android:layout_marginTop="10dp" />
 </RelativeLayout>

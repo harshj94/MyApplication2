@@ -1,5 +1,6 @@
 package jain.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -8,31 +9,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
-import com.mikepenz.fontawesome_typeface_library.FontAwesome;
-import com.mikepenz.materialdrawer.AccountHeader;
-import com.mikepenz.materialdrawer.AccountHeaderBuilder;
+import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.mikepenz.materialdrawer.Drawer;
-import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
-import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 
-import jain.myapplication.model.Train;
-import jain.myapplication.model.TrainBetweenStations;
-import jain.myapplication.rest.ApiClient;
-import jain.myapplication.rest.ApiInterface;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements CalendarDatePickerDialogFragment.OnDateSetListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    TextView textView;
+    private static final String FRAG_TAG_DATE_PICKER = "fragment_date_picker_name";
     String myapikey;
-    EditText train_number, date, source, destination, classs, quota;
+    EditText date, source, destination;
     Button getAvailability;
     private Drawer result = null;
 
@@ -41,103 +27,64 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        train_number = (EditText) findViewById(R.id.trainnumber);
-        date = (EditText) findViewById(R.id.date);
         source = (EditText) findViewById(R.id.source);
+        date = (EditText) findViewById(R.id.date);
         destination = (EditText) findViewById(R.id.destination);
-        classs = (EditText) findViewById(R.id.classs);
-        quota = (EditText) findViewById(R.id.quota);
         getAvailability = (Button) findViewById(R.id.get);
-        textView = (TextView) findViewById(R.id.textt);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(R.string.drawer_item_fullscreen_drawer);
-        AccountHeader headerResult = new AccountHeaderBuilder()
-                .withActivity(this)
-                .withCompactStyle(false)
-                .withHeaderBackground(R.mipmap.ic_launcher)
-                .withSavedInstance(savedInstanceState)
-                .build();
+//        getSupportActionBar().setTitle(R.string.drawer_item_fullscreen_drawer);
+//        AccountHeader headerResult = new AccountHeaderBuilder()
+//                .withActivity(this)
+//                .withCompactStyle(false)
+//                .withHeaderBackground(R.mipmap.ic_launcher)
+//                .withSavedInstance(savedInstanceState)
+//                .build();
 
         //Create the drawer
-        result = new DrawerBuilder()
-                .withActivity(this)
-                .withToolbar(toolbar)
-                .withAccountHeader(headerResult)
-                .withFullscreen(true)
-                .addDrawerItems(
-                        new PrimaryDrawerItem().withName(R.string.drawer_item_home).withIcon(FontAwesome.Icon.faw_home).withIdentifier(1),
-                        new PrimaryDrawerItem().withName(R.string.drawer_item_free_play).withIcon(FontAwesome.Icon.faw_gamepad),
-                        new PrimaryDrawerItem().withName(R.string.drawer_item_custom).withIcon(FontAwesome.Icon.faw_eye),
-                        //add some more items to get a scrolling list
-                        new SectionDrawerItem().withName(R.string.drawer_item_section_header),
-                        new SecondaryDrawerItem().withName(R.string.drawer_item_settings).withIcon(FontAwesome.Icon.faw_cog),
-                        new SecondaryDrawerItem().withName(R.string.drawer_item_help).withIcon(FontAwesome.Icon.faw_question).withEnabled(false),
-                        new SecondaryDrawerItem().withName(R.string.drawer_item_open_source).withIcon(FontAwesome.Icon.faw_github),
-                        new SecondaryDrawerItem().withName(R.string.drawer_item_contact).withIcon(FontAwesome.Icon.faw_bullhorn),
-                        new SectionDrawerItem().withName(R.string.drawer_item_section_header),
-                        new PrimaryDrawerItem().withName(R.string.drawer_item_custom).withIcon(FontAwesome.Icon.faw_eye),
-                        new PrimaryDrawerItem().withName(R.string.drawer_item_custom).withIcon(FontAwesome.Icon.faw_eye)
-                )
-                .withSavedInstance(savedInstanceState)
-                .build();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        result.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
+//        result = new DrawerBuilder()
+//                .withActivity(this)
+//                .withToolbar(toolbar)
+//                .withAccountHeader(headerResult)
+//                .withFullscreen(true)
+//                .addDrawerItems(
+//                        new PrimaryDrawerItem().withName(R.string.drawer_item_home).withIcon(FontAwesome.Icon.faw_home).withIdentifier(1),
+//                        new PrimaryDrawerItem().withName(R.string.drawer_item_free_play).withIcon(FontAwesome.Icon.faw_gamepad),
+//                        new PrimaryDrawerItem().withName(R.string.drawer_item_custom).withIcon(FontAwesome.Icon.faw_eye),
+//                        //add some more items to get a scrolling list
+//                        new SectionDrawerItem().withName(R.string.drawer_item_section_header),
+//                        new SecondaryDrawerItem().withName(R.string.drawer_item_settings).withIcon(FontAwesome.Icon.faw_cog),
+//                        new SecondaryDrawerItem().withName(R.string.drawer_item_help).withIcon(FontAwesome.Icon.faw_question).withEnabled(false),
+//                        new SecondaryDrawerItem().withName(R.string.drawer_item_open_source).withIcon(FontAwesome.Icon.faw_github),
+//                        new SecondaryDrawerItem().withName(R.string.drawer_item_contact).withIcon(FontAwesome.Icon.faw_bullhorn),
+//                        new SectionDrawerItem().withName(R.string.drawer_item_section_header),
+//                        new PrimaryDrawerItem().withName(R.string.drawer_item_custom).withIcon(FontAwesome.Icon.faw_eye),
+//                        new PrimaryDrawerItem().withName(R.string.drawer_item_custom).withIcon(FontAwesome.Icon.faw_eye)
+//                )
+//                .withSavedInstance(savedInstanceState)
+//                .build();
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+//        result.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
 
         myapikey = "vdtqp7326";
-
-
         getAvailability.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                try {
-//                    ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-//                    Call<TrainAvailability> call = apiService.getAvailabilityDetails(train_number.getText().toString().trim(), source.getText().toString().toUpperCase().trim(), destination.getText().toString().toUpperCase().trim(), date.getText().toString().trim(), classs.getText().toString().toLowerCase().trim(), quota.getText().toString().toLowerCase().trim());
-//                    call.enqueue(new Callback<TrainAvailability>() {
-//                        @Override
-//                        public void onResponse(Call<TrainAvailability> call, Response<TrainAvailability> response) {
-//                            Toast.makeText(MainActivity.this, "1", Toast.LENGTH_SHORT).show();
-//                            Availability[] availabilities = response.body().getAvailability();
-//                            String s = "";
-//                            for (Availability availability : availabilities) {
-//                                s = s + (availability.getDate() + "\t" + availability.getStatus() + "\n");
-//                            }
-//                            textView.setText(s);
-//                        }
-//
-//                        @Override
-//                        public void onFailure(Call<TrainAvailability> call, Throwable t) {
-//                            Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-//                            textView.setText(t.getMessage());
-//                            Log.e(TAG, t.toString());
-//                        }
-//                    });
-//                } catch (Exception e) {
-//                    Toast.makeText(MainActivity.this, "3", Toast.LENGTH_SHORT).show();
-//                    Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-//                    textView.setText(e.getMessage());
-//                }
+                Intent i = new Intent(getApplicationContext(), TrainListAcitivity.class);
+                i.putExtra("Source", source.getText().toString().trim().toUpperCase());
+                i.putExtra("Destination", destination.getText().toString().trim().toUpperCase());
+                i.putExtra("Date", date.getText().toString().trim());
+                startActivity(i);
+            }
+        });
 
-                ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-                Call<TrainBetweenStations> call2 = apiService.getTrainBetweenStations(source.getText().toString().toUpperCase().trim(), destination.getText().toString().toUpperCase().trim(), date.getText().toString().trim());
-                call2.enqueue(new Callback<TrainBetweenStations>() {
-                    @Override
-                    public void onResponse(Call<TrainBetweenStations> call, Response<TrainBetweenStations> response) {
-                        Train[] trains = response.body().getTrain();
-                        String s = "";
-                        for (Train train : trains) {
-                            s = s + (train.getName() + "\n");
-                        }
-                        textView.setText(s);
-                    }
-
-                    @Override
-                    public void onFailure(Call<TrainBetweenStations> call, Throwable t) {
-
-                    }
-                });
-
+        date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CalendarDatePickerDialogFragment cdp = new CalendarDatePickerDialogFragment()
+                        .setOnDateSetListener(MainActivity.this);
+                cdp.show(getSupportFragmentManager(), FRAG_TAG_DATE_PICKER);
             }
         });
     }
@@ -160,11 +107,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        if (result != null && result.isDrawerOpen()) {
-            result.closeDrawer();
-        } else {
-            super.onBackPressed();
-        }
+    public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
+        date.setText("" + dayOfMonth + "-" + monthOfYear);
     }
+
+//    @Override
+//    public void onBackPressed() {
+//        if (result != null && result.isDrawerOpen()) {
+//            result.closeDrawer();
+//        } else {
+//            super.onBackPressed();
+//        }
+//    }
 }
