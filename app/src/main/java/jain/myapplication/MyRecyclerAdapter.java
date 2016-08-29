@@ -5,8 +5,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.silencedut.expandablelayout.ExpandableLayout;
 
 import java.util.List;
 
@@ -28,25 +30,35 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Cu
     @Override
     public MyRecyclerAdapter.CustomViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_row, null);
-
-        CustomViewHolder viewHolder = new CustomViewHolder(view);
-        return viewHolder;
+        return new CustomViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(MyRecyclerAdapter.CustomViewHolder holder, int position) {
+    public void onBindViewHolder(final MyRecyclerAdapter.CustomViewHolder holder, int position) {
         final Train train = trainList.get(position);
 
         View.OnClickListener clickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomViewHolder holder = (CustomViewHolder) view.getTag();
-                int position = holder.getPosition();
-                Train feedItem = trainList.get(position);
-                Toast.makeText(mContext, feedItem.getName(), Toast.LENGTH_SHORT).show();
+//                CustomViewHolder holder = (CustomViewHolder) view.getTag();
+//                int position = holder.getPosition();
+//                Train feedItem = trainList.get(position);
+//                Toast.makeText(mContext, feedItem.getName(), Toast.LENGTH_SHORT).show();
             }
         };
         holder.trainNumber.setOnClickListener(clickListener);
+        holder.expandableLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (holder.imageView.getTag().toString().equals("down")) {
+                    holder.imageView.setImageResource(R.drawable.uparrow);
+                    holder.imageView.setTag("up");
+                } else {
+                    holder.imageView.setImageResource(R.drawable.downarrow);
+                    holder.imageView.setTag("down");
+                }
+            }
+        });
 
         holder.trainNumber.setTag(holder);
         holder.trainNumber.setText(train.getNumber());
@@ -64,15 +76,19 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Cu
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
         protected TextView trainNumber, trainName, from, srcTime, to, destTime;
+        protected ExpandableLayout expandableLayout;
+        protected ImageView imageView;
 
         public CustomViewHolder(View view) {
             super(view);
             this.trainNumber = (TextView) view.findViewById(R.id.trainNumber);
+            this.expandableLayout = (ExpandableLayout) view.findViewById(R.id.expand);
             this.trainName = (TextView) view.findViewById(R.id.trainName);
             this.from = (TextView) view.findViewById(R.id.from);
             this.srcTime = (TextView) view.findViewById(R.id.sourceTime);
             this.to = (TextView) view.findViewById(R.id.to);
             this.destTime = (TextView) view.findViewById(R.id.destTime);
+            this.imageView = (ImageView) view.findViewById(R.id.arrow);
         }
     }
 }

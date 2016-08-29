@@ -1,5 +1,6 @@
 package jain.myapplication;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -21,11 +22,13 @@ public class MainActivity extends AppCompatActivity implements CalendarDatePicke
     EditText date, source, destination;
     Button getAvailability;
     private Drawer result = null;
+    public static Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        context=getApplicationContext();
 
         source = (EditText) findViewById(R.id.source);
         date = (EditText) findViewById(R.id.date);
@@ -108,7 +111,15 @@ public class MainActivity extends AppCompatActivity implements CalendarDatePicke
 
     @Override
     public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
-        date.setText("" + dayOfMonth + "-" + monthOfYear);
+        String month = "" + (monthOfYear + 1);
+        String date_ = "" + dayOfMonth;
+        if (monthOfYear < 10) {
+            month = "0" + (monthOfYear + 1) + "";
+        }
+        if (dayOfMonth < 10) {
+            date_ = "0" + dayOfMonth + "";
+        }
+        date.setText(date_ + "-" + month);
     }
 
 //    @Override
