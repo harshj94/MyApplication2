@@ -30,7 +30,6 @@ public class TrainListAcitivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MainActivity.context=getApplicationContext();
         setContentView(R.layout.activity_train_list_acitivity);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);

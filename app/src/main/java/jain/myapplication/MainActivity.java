@@ -1,6 +1,5 @@
 package jain.myapplication;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,35 +7,42 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.mikepenz.materialdrawer.Drawer;
 
+import java.util.Arrays;
+
 public class MainActivity extends AppCompatActivity implements CalendarDatePickerDialogFragment.OnDateSetListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final String FRAG_TAG_DATE_PICKER = "fragment_date_picker_name";
     String myapikey;
-    EditText date, source, destination;
+    EditText date;
+    AutoCompleteTextView source, destination;
     Button getAvailability;
     private Drawer result = null;
-    public static Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        context=getApplicationContext();
 
-        source = (EditText) findViewById(R.id.source);
+        source = (AutoCompleteTextView) findViewById(R.id.source);
+        destination = (AutoCompleteTextView) findViewById(R.id.destination);
         date = (EditText) findViewById(R.id.date);
-        destination = (EditText) findViewById(R.id.destination);
         getAvailability = (Button) findViewById(R.id.get);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        source.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, Arrays.asList(getResources().getStringArray(R.array.station_codes))));
+        destination.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, Arrays.asList(getResources().getStringArray(R.array.station_codes))));
+
 //        getSupportActionBar().setTitle(R.string.drawer_item_fullscreen_drawer);
 //        AccountHeader headerResult = new AccountHeaderBuilder()
 //                .withActivity(this)
