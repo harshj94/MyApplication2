@@ -11,16 +11,17 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
-import com.mikepenz.materialdrawer.AccountHeader;
-import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SectionDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.Nameable;
 
 import java.util.Arrays;
 
@@ -48,21 +49,14 @@ public class MainActivity extends AppCompatActivity implements CalendarDatePicke
 
         source.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, Arrays.asList(getResources().getStringArray(R.array.station_codes))));
         destination.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, Arrays.asList(getResources().getStringArray(R.array.station_codes))));
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Train");
         }
-        AccountHeader headerResult = new AccountHeaderBuilder()
-                .withActivity(this)
-                .withCompactStyle(false)
-                .withHeaderBackground(R.mipmap.ic_launcher)
-                .withSavedInstance(savedInstanceState)
-                .build();
 
-        //Create the drawer
         result = new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(toolbar)
-                .withAccountHeader(headerResult)
                 .withFullscreen(true)
                 .addDrawerItems(
                         new PrimaryDrawerItem().withName("Home").withIcon(FontAwesome.Icon.faw_home).withIdentifier(1),
@@ -78,6 +72,16 @@ public class MainActivity extends AppCompatActivity implements CalendarDatePicke
                         new PrimaryDrawerItem().withName("Custom").withIcon(FontAwesome.Icon.faw_eye),
                         new PrimaryDrawerItem().withName("Custom").withIcon(FontAwesome.Icon.faw_eye)
                 )
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        if (drawerItem instanceof Nameable) {
+                            Toast.makeText(MainActivity.this, ((Nameable) drawerItem).getName().getText(MainActivity.this), Toast.LENGTH_SHORT).show();
+                        }
+
+                        return false;
+                    }
+                })
                 .withSavedInstance(savedInstanceState)
                 .build();
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
