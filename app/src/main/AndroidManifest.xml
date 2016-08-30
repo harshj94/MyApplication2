@@ -20,7 +20,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TrainListAcitivity"></activity>
+        <activity android:name=".TrainListActivity"></activity>
     </application>
 
 </manifest>

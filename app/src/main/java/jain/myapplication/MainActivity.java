@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements CalendarDatePicke
         getAvailability.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), TrainListAcitivity.class);
+                Intent i = new Intent(getApplicationContext(), TrainListActivity.class);
                 i.putExtra("Source", source.getText().toString().trim().toUpperCase());
                 i.putExtra("Destination", destination.getText().toString().trim().toUpperCase());
                 i.putExtra("Date", date.getText().toString().trim());

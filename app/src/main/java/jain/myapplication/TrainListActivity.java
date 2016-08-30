@@ -19,7 +19,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TrainListAcitivity extends AppCompatActivity {
+public class TrainListActivity extends AppCompatActivity {
 
     private static final String TAG = "RecyclerViewExample";
     private List<Train> trainList;
@@ -48,19 +48,17 @@ public class TrainListAcitivity extends AppCompatActivity {
                 if (response.body().getResponse_code().equals("200")) {
                     Train[] trains = response.body().getTrain();
                     trainList = Arrays.asList(trains);
-                    adapter = new MyRecyclerAdapter(TrainListAcitivity.this, trainList);
+                    adapter = new MyRecyclerAdapter(TrainListActivity.this, trainList);
                     mRecyclerView.setAdapter(adapter);
                 } else {
-                    Toast.makeText(TrainListAcitivity.this, "Failed to fetch data!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TrainListActivity.this, "Failed to fetch data!", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<TrainBetweenStations> call, Throwable t) {
-                Toast.makeText(TrainListAcitivity.this, "Failed to fetch data!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(TrainListActivity.this, "Failed to fetch data!", Toast.LENGTH_SHORT).show();
             }
         });
-
-
     }
 }
