@@ -13,13 +13,19 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 
 import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity implements CalendarDatePickerDialogFragment.OnDateSetListener {
 
-    private static final String TAG = MainActivity.class.getSimpleName();
     private static final String FRAG_TAG_DATE_PICKER = "fragment_date_picker_name";
     String myapikey;
     EditText date;
@@ -42,39 +48,40 @@ public class MainActivity extends AppCompatActivity implements CalendarDatePicke
 
         source.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, Arrays.asList(getResources().getStringArray(R.array.station_codes))));
         destination.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, Arrays.asList(getResources().getStringArray(R.array.station_codes))));
-
-//        getSupportActionBar().setTitle(R.string.drawer_item_fullscreen_drawer);
-//        AccountHeader headerResult = new AccountHeaderBuilder()
-//                .withActivity(this)
-//                .withCompactStyle(false)
-//                .withHeaderBackground(R.mipmap.ic_launcher)
-//                .withSavedInstance(savedInstanceState)
-//                .build();
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Train");
+        }
+        AccountHeader headerResult = new AccountHeaderBuilder()
+                .withActivity(this)
+                .withCompactStyle(false)
+                .withHeaderBackground(R.mipmap.ic_launcher)
+                .withSavedInstance(savedInstanceState)
+                .build();
 
         //Create the drawer
-//        result = new DrawerBuilder()
-//                .withActivity(this)
-//                .withToolbar(toolbar)
-//                .withAccountHeader(headerResult)
-//                .withFullscreen(true)
-//                .addDrawerItems(
-//                        new PrimaryDrawerItem().withName(R.string.drawer_item_home).withIcon(FontAwesome.Icon.faw_home).withIdentifier(1),
-//                        new PrimaryDrawerItem().withName(R.string.drawer_item_free_play).withIcon(FontAwesome.Icon.faw_gamepad),
-//                        new PrimaryDrawerItem().withName(R.string.drawer_item_custom).withIcon(FontAwesome.Icon.faw_eye),
-//                        //add some more items to get a scrolling list
-//                        new SectionDrawerItem().withName(R.string.drawer_item_section_header),
-//                        new SecondaryDrawerItem().withName(R.string.drawer_item_settings).withIcon(FontAwesome.Icon.faw_cog),
-//                        new SecondaryDrawerItem().withName(R.string.drawer_item_help).withIcon(FontAwesome.Icon.faw_question).withEnabled(false),
-//                        new SecondaryDrawerItem().withName(R.string.drawer_item_open_source).withIcon(FontAwesome.Icon.faw_github),
-//                        new SecondaryDrawerItem().withName(R.string.drawer_item_contact).withIcon(FontAwesome.Icon.faw_bullhorn),
-//                        new SectionDrawerItem().withName(R.string.drawer_item_section_header),
-//                        new PrimaryDrawerItem().withName(R.string.drawer_item_custom).withIcon(FontAwesome.Icon.faw_eye),
-//                        new PrimaryDrawerItem().withName(R.string.drawer_item_custom).withIcon(FontAwesome.Icon.faw_eye)
-//                )
-//                .withSavedInstance(savedInstanceState)
-//                .build();
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-//        result.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
+        result = new DrawerBuilder()
+                .withActivity(this)
+                .withToolbar(toolbar)
+                .withAccountHeader(headerResult)
+                .withFullscreen(true)
+                .addDrawerItems(
+                        new PrimaryDrawerItem().withName("Home").withIcon(FontAwesome.Icon.faw_home).withIdentifier(1),
+                        new PrimaryDrawerItem().withName("Play").withIcon(FontAwesome.Icon.faw_gamepad),
+                        new PrimaryDrawerItem().withName("Custom").withIcon(FontAwesome.Icon.faw_eye),
+                        //add some more items to get a scrolling list
+                        new SectionDrawerItem().withName("Section Header"),
+                        new SecondaryDrawerItem().withName("Settings").withIcon(FontAwesome.Icon.faw_cog),
+                        new SecondaryDrawerItem().withName("Help").withIcon(FontAwesome.Icon.faw_question).withEnabled(false),
+                        new SecondaryDrawerItem().withName("Open Source").withIcon(FontAwesome.Icon.faw_github),
+                        new SecondaryDrawerItem().withName("Contact").withIcon(FontAwesome.Icon.faw_bullhorn),
+                        new SectionDrawerItem().withName("Section Header"),
+                        new PrimaryDrawerItem().withName("Custom").withIcon(FontAwesome.Icon.faw_eye),
+                        new PrimaryDrawerItem().withName("Custom").withIcon(FontAwesome.Icon.faw_eye)
+                )
+                .withSavedInstance(savedInstanceState)
+                .build();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        result.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
 
         myapikey = "vdtqp7326";
         getAvailability.setOnClickListener(new View.OnClickListener() {
@@ -106,11 +113,11 @@ public class MainActivity extends AppCompatActivity implements CalendarDatePicke
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            return true;
-        }
+//        int id = item.getItemId();
+//
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -128,12 +135,12 @@ public class MainActivity extends AppCompatActivity implements CalendarDatePicke
         date.setText(date_ + "-" + month);
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        if (result != null && result.isDrawerOpen()) {
-//            result.closeDrawer();
-//        } else {
-//            super.onBackPressed();
-//        }
-//    }
+    @Override
+    public void onBackPressed() {
+        if (result != null && result.isDrawerOpen()) {
+            result.closeDrawer();
+        } else {
+            super.onBackPressed();
+        }
+    }
 }
