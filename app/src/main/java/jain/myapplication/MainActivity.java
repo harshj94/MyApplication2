@@ -91,13 +91,17 @@ public class MainActivity extends AppCompatActivity implements CalendarDatePicke
         getAvailability.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), TrainListActivity.class);
-                String text = source.getText().toString().trim();
-                i.putExtra("Source", text.substring(text.lastIndexOf(" ") + 1));
-                text = destination.getText().toString().trim();
-                i.putExtra("Destination", text.substring(text.lastIndexOf(" ") + 1));
-                i.putExtra("Date", date.getText().toString().trim());
-                startActivity(i);
+                if (!(source.getText().toString().equals("") || destination.getText().toString().equals("") || date.getText().toString().equals(""))) {
+                    Intent i = new Intent(getApplicationContext(), TrainListActivity.class);
+                    String text = source.getText().toString().trim();
+                    i.putExtra("Source", text.substring(text.lastIndexOf(" ") + 1));
+                    text = destination.getText().toString().trim();
+                    i.putExtra("Destination", text.substring(text.lastIndexOf(" ") + 1));
+                    i.putExtra("Date", date.getText().toString().trim());
+                    startActivity(i);
+                } else {
+                    Toast.makeText(MainActivity.this, "One or more fields are empty.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
