@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements CalendarDatePicke
             @Override
             public void onClick(View view) {
                 if (!(source.getText().toString().equals("") || destination.getText().toString().equals("") || date.getText().toString().equals(""))) {
-                    Intent i = new Intent(getApplicationContext(), TrainListActivity.class);
+                    Intent i = new Intent(MainActivity.this, TrainListActivity.class);
                     String text = source.getText().toString().trim();
                     i.putExtra("Source", text.substring(text.lastIndexOf(" ") + 1));
                     text = destination.getText().toString().trim();
