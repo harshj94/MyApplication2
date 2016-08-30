@@ -92,8 +92,10 @@ public class MainActivity extends AppCompatActivity implements CalendarDatePicke
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getApplicationContext(), TrainListActivity.class);
-                i.putExtra("Source", source.getText().toString().trim().toUpperCase());
-                i.putExtra("Destination", destination.getText().toString().trim().toUpperCase());
+                String text = source.getText().toString().trim();
+                i.putExtra("Source", text.substring(text.lastIndexOf(" ") + 1));
+                text = destination.getText().toString().trim();
+                i.putExtra("Destination", text.substring(text.lastIndexOf(" ") + 1));
                 i.putExtra("Date", date.getText().toString().trim());
                 startActivity(i);
             }
