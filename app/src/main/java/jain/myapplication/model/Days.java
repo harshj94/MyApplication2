@@ -1,9 +1,12 @@
 package jain.myapplication.model;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by harsh on 27_Aug_16.
  */
 public class Days {
+    @SerializedName(value = "day-code")
     private String day_code;
 
     private String runs;

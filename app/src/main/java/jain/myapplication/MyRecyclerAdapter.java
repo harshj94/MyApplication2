@@ -6,12 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.silencedut.expandablelayout.ExpandableLayout;
 
 import java.util.List;
 
+import jain.myapplication.model.ClassType;
 import jain.myapplication.model.Train;
 
 /**
@@ -19,6 +21,8 @@ import jain.myapplication.model.Train;
  */
 public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.CustomViewHolder> {
 
+    ClassType[] classTypes;
+    MyRecyclerAdapter.CustomViewHolder holder;
     private List<Train> trainList;
     private Context mContext;
 
@@ -35,18 +39,9 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Cu
 
     @Override
     public void onBindViewHolder(final MyRecyclerAdapter.CustomViewHolder holder, int position) {
+        this.holder = holder;
         final Train train = trainList.get(position);
 
-        View.OnClickListener clickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                CustomViewHolder holder = (CustomViewHolder) view.getTag();
-//                int position = holder.getPosition();
-//                Train feedItem = trainList.get(position);
-//                Toast.makeText(mContext, feedItem.getName(), Toast.LENGTH_SHORT).show();
-            }
-        };
-        holder.trainNumber.setOnClickListener(clickListener);
         holder.expandableLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -60,13 +55,39 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Cu
             }
         });
 
-        holder.trainNumber.setTag(holder);
         holder.trainNumber.setText(train.getNumber());
         holder.trainName.setText(train.getName());
         holder.from.setText(train.getFrom().getCode());
         holder.to.setText(train.getTo().getCode());
         holder.srcTime.setText(train.getSrc_departure_time());
         holder.destTime.setText(train.getDest_arrival_time());
+        classTypes = train.getClasses();
+        for (ClassType classType : classTypes) {
+            if (classType.getClass_code().equals("1A") && classType.getAvailable().equals("N")) {
+                holder.availableClasses.removeView(holder.firstac);
+            }
+            if (classType.getClass_code().equals("2A") && classType.getAvailable().equals("N")) {
+                holder.availableClasses.removeView(holder.secondac);
+            }
+            if (classType.getClass_code().equals("3A") && classType.getAvailable().equals("N")) {
+                holder.availableClasses.removeView(holder.thirdac);
+            }
+            if (classType.getClass_code().equals("SL") && classType.getAvailable().equals("N")) {
+                holder.availableClasses.removeView(holder.sleeper);
+            }
+            if (classType.getClass_code().equals("2S") && classType.getAvailable().equals("N")) {
+                holder.availableClasses.removeView(holder.secondseating);
+            }
+            if (classType.getClass_code().equals("CC") && classType.getAvailable().equals("N")) {
+                holder.availableClasses.removeView(holder.chaircar);
+            }
+        }
+    }
+
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
     }
 
     @Override
@@ -75,9 +96,10 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Cu
     }
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
-        protected TextView trainNumber, trainName, from, srcTime, to, destTime;
+        protected TextView trainNumber, trainName, from, srcTime, to, destTime, firstac, secondac, thirdac, sleeper, secondseating, chaircar;
         protected ExpandableLayout expandableLayout;
         protected ImageView imageView;
+        protected LinearLayout availableClasses;
 
         public CustomViewHolder(View view) {
             super(view);
@@ -89,6 +111,13 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Cu
             this.to = (TextView) view.findViewById(R.id.to);
             this.destTime = (TextView) view.findViewById(R.id.destTime);
             this.imageView = (ImageView) view.findViewById(R.id.arrow);
+            this.availableClasses = (LinearLayout) view.findViewById(R.id.availableClasses);
+            this.firstac = (TextView) view.findViewById(R.id.firstac);
+            this.secondac = (TextView) view.findViewById(R.id.secondac);
+            this.thirdac = (TextView) view.findViewById(R.id.thirdac);
+            this.sleeper = (TextView) view.findViewById(R.id.sleeper);
+            this.secondseating = (TextView) view.findViewById(R.id.secondseating);
+            this.chaircar = (TextView) view.findViewById(R.id.chaircar);
         }
     }
 }

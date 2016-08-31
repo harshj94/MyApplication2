@@ -120,6 +120,84 @@
                                 android:textSize="12sp" />
                         </LinearLayout>
 
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <LinearLayout
+                                android:id="@+id/availableClasses"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentBottom="true">
+
+                                <custom_font.MyTextView
+                                    android:id="@+id/firstac"
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:layout_marginRight="2dp"
+                                    android:background="@color/colorAccent"
+                                    android:gravity="center"
+                                    android:text="1A"
+                                    android:textColor="#FFF"
+                                    android:textSize="17sp" />
+
+                                <custom_font.MyTextView
+                                    android:id="@+id/secondac"
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:layout_marginRight="2dp"
+                                    android:background="@color/colorAccent"
+                                    android:gravity="center"
+                                    android:text="2A"
+                                    android:textColor="#FFF"
+                                    android:textSize="17sp" />
+
+                                <custom_font.MyTextView
+                                    android:id="@+id/thirdac"
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:layout_marginRight="2dp"
+                                    android:background="@color/colorAccent"
+                                    android:gravity="center"
+                                    android:text="3A"
+                                    android:textColor="#FFF"
+                                    android:textSize="17sp" />
+
+                                <custom_font.MyTextView
+                                    android:id="@+id/sleeper"
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:layout_marginRight="2dp"
+                                    android:background="@color/colorAccent"
+                                    android:gravity="center"
+                                    android:text="SL"
+                                    android:textColor="#FFF"
+                                    android:textSize="17sp" />
+
+                                <custom_font.MyTextView
+                                    android:id="@+id/secondseating"
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:layout_marginRight="2dp"
+                                    android:background="@color/colorAccent"
+                                    android:gravity="center"
+                                    android:text="CC"
+                                    android:textColor="#FFF"
+                                    android:textSize="17sp" />
+
+                                <custom_font.MyTextView
+                                    android:id="@+id/chaircar"
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:layout_marginRight="2dp"
+                                    android:background="@color/colorAccent"
+                                    android:gravity="center"
+                                    android:text="2S"
+                                    android:textColor="#FFF"
+                                    android:textSize="17sp" />
+                            </LinearLayout>
+                        </RelativeLayout>
+
                     </LinearLayout>
 
                     <ImageView

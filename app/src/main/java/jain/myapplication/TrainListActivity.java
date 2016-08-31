@@ -21,7 +21,6 @@ import retrofit2.Response;
 
 public class TrainListActivity extends AppCompatActivity {
 
-    private static final String TAG = "RecyclerViewExample";
     private List<Train> trainList;
     private RecyclerView mRecyclerView;
     private MyRecyclerAdapter adapter;
@@ -34,6 +33,7 @@ public class TrainListActivity extends AppCompatActivity {
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setNestedScrollingEnabled(true);
 
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
         progressBar.setVisibility(View.VISIBLE);

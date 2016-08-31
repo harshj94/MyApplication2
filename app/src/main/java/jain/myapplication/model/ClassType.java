@@ -1,9 +1,12 @@
 package jain.myapplication.model;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by harsh on 12-Aug-16.
  */
 public class ClassType {
+    @SerializedName(value = "class-code")
     private String class_code;
     private String class_name;
     private String available;
