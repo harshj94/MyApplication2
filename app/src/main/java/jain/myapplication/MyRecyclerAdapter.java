@@ -63,22 +63,22 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Cu
         holder.destTime.setText(train.getDest_arrival_time());
         classTypes = train.getClasses();
         for (ClassType classType : classTypes) {
-            if (classType.getClass_code().equals("1A") && classType.getAvailable().equals("N")) {
+            if (classType.getClass_code().equals("1A") && !classType.getAvailable().equals("Y")) {
                 holder.availableClasses.removeView(holder.firstac);
             }
-            if (classType.getClass_code().equals("2A") && classType.getAvailable().equals("N")) {
+            if (classType.getClass_code().equals("2A") && !classType.getAvailable().equals("Y")) {
                 holder.availableClasses.removeView(holder.secondac);
             }
-            if (classType.getClass_code().equals("3A") && classType.getAvailable().equals("N")) {
+            if (classType.getClass_code().equals("3A") && !classType.getAvailable().equals("Y")) {
                 holder.availableClasses.removeView(holder.thirdac);
             }
-            if (classType.getClass_code().equals("SL") && classType.getAvailable().equals("N")) {
+            if (classType.getClass_code().equals("SL") && !classType.getAvailable().equals("Y")) {
                 holder.availableClasses.removeView(holder.sleeper);
             }
-            if (classType.getClass_code().equals("2S") && classType.getAvailable().equals("N")) {
+            if (classType.getClass_code().equals("2S") && !classType.getAvailable().equals("Y")) {
                 holder.availableClasses.removeView(holder.secondseating);
             }
-            if (classType.getClass_code().equals("CC") && classType.getAvailable().equals("N")) {
+            if (classType.getClass_code().equals("CC") && !classType.getAvailable().equals("Y")) {
                 holder.availableClasses.removeView(holder.chaircar);
             }
         }
