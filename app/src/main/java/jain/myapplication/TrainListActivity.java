@@ -32,10 +32,9 @@ public class TrainListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_train_list_acitivity);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setNestedScrollingEnabled(true);
 
-        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
         progressBar.setVisibility(View.VISIBLE);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
@@ -44,6 +43,7 @@ public class TrainListActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(Call<TrainBetweenStations> call, Response<TrainBetweenStations> response) {
+                progressBar.setVisibility(View.GONE);
                 if (response.body().getResponse_code().equals("200")) {
                     Train[] trains = response.body().getTrain();
                     trainList = Arrays.asList(trains);
@@ -52,7 +52,6 @@ public class TrainListActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(TrainListActivity.this, "Failed to fetch data!", Toast.LENGTH_SHORT).show();
                 }
-                progressBar.setVisibility(View.GONE);
             }
 
             @Override
