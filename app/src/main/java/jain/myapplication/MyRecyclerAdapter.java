@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.silencedut.expandablelayout.ExpandableLayout;
@@ -41,19 +40,6 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Cu
     @Override
     public void onBindViewHolder(final MyRecyclerAdapter.CustomViewHolder holder, int position) {
         final Train train = trainList.get(position);
-
-        holder.expandableLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (holder.imageView.getTag().toString().equals("down")) {
-                    holder.imageView.setImageResource(R.drawable.uparrow);
-                    holder.imageView.setTag("up");
-                } else {
-                    holder.imageView.setImageResource(R.drawable.downarrow);
-                    holder.imageView.setTag("down");
-                }
-            }
-        });
 
         holder.trainNumber.setText(train.getNumber());
         holder.trainName.setText(train.getName());
@@ -113,11 +99,10 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Cu
         return (null != trainList ? trainList.size() : 0);
     }
 
-    public class CustomViewHolder extends RecyclerView.ViewHolder {
+    public class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         protected TextView trainNumber, trainName, from, srcTime, to, destTime, firstac, secondac, thirdac, sleeper, secondseating, chaircar;
         protected ExpandableLayout expandableLayout;
         protected ImageView imageView;
-        protected LinearLayout availableClasses;
 
         public CustomViewHolder(View view) {
             super(view);
@@ -129,13 +114,29 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Cu
             this.to = (TextView) view.findViewById(R.id.to);
             this.destTime = (TextView) view.findViewById(R.id.destTime);
             this.imageView = (ImageView) view.findViewById(R.id.arrow);
-            this.availableClasses = (LinearLayout) view.findViewById(R.id.availableClasses);
             this.firstac = (TextView) view.findViewById(R.id.firstac);
             this.secondac = (TextView) view.findViewById(R.id.secondac);
             this.thirdac = (TextView) view.findViewById(R.id.thirdac);
             this.sleeper = (TextView) view.findViewById(R.id.sleeper);
             this.secondseating = (TextView) view.findViewById(R.id.secondseating);
             this.chaircar = (TextView) view.findViewById(R.id.chaircar);
+            expandableLayout.setEnabled(false);
+
+            firstac.setOnClickListener(this);
+            secondac.setOnClickListener(this);
+            thirdac.setOnClickListener(this);
+            sleeper.setOnClickListener(this);
+            chaircar.setOnClickListener(this);
+            secondseating.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (expandableLayout.isExpanded()) {
+                expandableLayout.close();
+            } else {
+                expandableLayout.expand();
+            }
         }
     }
 }

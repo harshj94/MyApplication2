@@ -28,7 +28,6 @@ import java.util.Arrays;
 public class MainActivity extends AppCompatActivity implements CalendarDatePickerDialogFragment.OnDateSetListener {
 
     private static final String FRAG_TAG_DATE_PICKER = "fragment_date_picker_name";
-    String myapikey;
     EditText date;
     AutoCompleteTextView source, destination;
     Button getAvailability;
@@ -87,7 +86,6 @@ public class MainActivity extends AppCompatActivity implements CalendarDatePicke
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         result.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
 
-        myapikey = "vdtqp7326";
         getAvailability.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
