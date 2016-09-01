@@ -43,7 +43,6 @@ public class TrainListActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(Call<TrainBetweenStations> call, Response<TrainBetweenStations> response) {
-                progressBar.setVisibility(View.GONE);
                 if (response.body().getResponse_code().equals("200")) {
                     Train[] trains = response.body().getTrain();
                     trainList = Arrays.asList(trains);
@@ -52,6 +51,7 @@ public class TrainListActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(TrainListActivity.this, "Failed to fetch data!", Toast.LENGTH_SHORT).show();
                 }
+                progressBar.setVisibility(View.GONE);
             }
 
             @Override

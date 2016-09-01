@@ -24,7 +24,6 @@ import jain.myapplication.model.Train;
 public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.CustomViewHolder> {
 
     ClassType[] classTypes;
-    MyRecyclerAdapter.CustomViewHolder holder;
     private List<Train> trainList;
     private Context mContext;
 
@@ -41,7 +40,6 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Cu
 
     @Override
     public void onBindViewHolder(final MyRecyclerAdapter.CustomViewHolder holder, int position) {
-        this.holder = holder;
         final Train train = trainList.get(position);
 
         holder.expandableLayout.setOnClickListener(new View.OnClickListener() {
@@ -64,48 +62,55 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Cu
         holder.srcTime.setText(train.getSrc_departure_time());
         holder.destTime.setText(train.getDest_arrival_time());
         classTypes = train.getClasses();
+        holder.firstac.setVisibility(View.VISIBLE);
+        holder.secondac.setVisibility(View.VISIBLE);
+        holder.thirdac.setVisibility(View.VISIBLE);
+        holder.sleeper.setVisibility(View.VISIBLE);
+        holder.secondseating.setVisibility(View.VISIBLE);
+        holder.chaircar.setVisibility(View.VISIBLE);
+
         for (ClassType classType : classTypes) {
-            if (classType.getClass_code().equals("1A") && !classType.getAvailable().equals("Y")) {
-                holder.availableClasses.removeView(holder.firstac);
-            }
-            if (classType.getClass_code().equals("2A") && !classType.getAvailable().equals("Y")) {
-                holder.availableClasses.removeView(holder.secondac);
-            }
-            if (classType.getClass_code().equals("3A") && !classType.getAvailable().equals("Y")) {
-                holder.availableClasses.removeView(holder.thirdac);
-            }
-            if (classType.getClass_code().equals("SL") && !classType.getAvailable().equals("Y")) {
-                holder.availableClasses.removeView(holder.sleeper);
-            }
-            if (classType.getClass_code().equals("2S") && !classType.getAvailable().equals("Y")) {
-                holder.availableClasses.removeView(holder.secondseating);
-            }
-            if (classType.getClass_code().equals("CC") && !classType.getAvailable().equals("Y")) {
-                holder.availableClasses.removeView(holder.chaircar);
+            switch (classType.getClass_code()) {
+                case "1A":
+                    if (!classType.getAvailable().equals("Y"))
+                        holder.firstac.setVisibility(View.GONE);
+                    break;
+                case "2A":
+                    if (!classType.getAvailable().equals("Y"))
+                        holder.secondac.setVisibility(View.GONE);
+                    break;
+                case "3A":
+                    if (!classType.getAvailable().equals("Y"))
+                        holder.thirdac.setVisibility(View.GONE);
+                    break;
+                case "SL":
+                    if (!classType.getAvailable().equals("Y"))
+                        holder.sleeper.setVisibility(View.GONE);
+                    break;
+                case "2S":
+                    if (!classType.getAvailable().equals("Y"))
+                        holder.secondseating.setVisibility(View.GONE);
+                    break;
+                case "CC":
+                    if (!classType.getAvailable().equals("Y"))
+                        holder.chaircar.setVisibility(View.GONE);
+                    break;
             }
         }
-
         int lastPosition = -1;
         Animation animation = AnimationUtils.loadAnimation(mContext, (position > lastPosition) ? R.anim.up_from_bottom : R.anim.down_from_top);
         holder.itemView.startAnimation(animation);
-        lastPosition = position;
-    }
-
-
-    @Override
-    public int getItemViewType(int position) {
-        return position;
-    }
-
-    @Override
-    public int getItemCount() {
-        return (null != trainList ? trainList.size() : 0);
     }
 
     @Override
     public void onViewDetachedFromWindow(CustomViewHolder holder) {
         super.onViewDetachedFromWindow(holder);
         holder.itemView.clearAnimation();
+    }
+
+    @Override
+    public int getItemCount() {
+        return (null != trainList ? trainList.size() : 0);
     }
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
