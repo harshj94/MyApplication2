@@ -100,9 +100,10 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Cu
     }
 
     public class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        protected TextView trainNumber, trainName, from, srcTime, to, destTime, firstac, secondac, thirdac, sleeper, secondseating, chaircar;
+        protected TextView trainNumber, trainName, from, srcTime, to, destTime, firstac, secondac, thirdac, sleeper, secondseating, chaircar, availability;
         protected ExpandableLayout expandableLayout;
         protected ImageView imageView;
+        protected View previousView = null;
 
         public CustomViewHolder(View view) {
             super(view);
@@ -120,6 +121,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Cu
             this.sleeper = (TextView) view.findViewById(R.id.sleeper);
             this.secondseating = (TextView) view.findViewById(R.id.secondseating);
             this.chaircar = (TextView) view.findViewById(R.id.chaircar);
+            this.availability = (TextView) view.findViewById(R.id.availability);
             expandableLayout.setEnabled(false);
 
             firstac.setOnClickListener(this);
@@ -132,10 +134,44 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Cu
 
         @Override
         public void onClick(View view) {
-            if (expandableLayout.isExpanded()) {
-                expandableLayout.close();
-            } else {
-                expandableLayout.expand();
+            view.setBackgroundResource(R.drawable.bg_blue);
+            if (previousView == null || view == previousView) {
+                if (expandableLayout.isExpanded()) {
+                    expandableLayout.close();
+                    view.setBackgroundResource(R.drawable.bg_red);
+                } else {
+                    expandableLayout.expand();
+                }
+            }
+            if (previousView != null && view != previousView) {
+                previousView.setBackgroundResource(R.drawable.bg_red);
+                if (!expandableLayout.isExpanded()) {
+                    expandableLayout.expand();
+                }
+            }
+            previousView = view;
+            switch (view.getId()) {
+                case R.id.firstac:
+                    availability.setText("availability for first ac");
+                    break;
+                case R.id.secondac:
+                    availability.setText("availability for second ac");
+                    break;
+                case R.id.thirdac:
+                    availability.setText("availability for third ac");
+                    break;
+                case R.id.sleeper:
+                    availability.setText("availability for sleeper");
+                    break;
+                case R.id.chaircar:
+                    availability.setText("availability for chair car");
+                    break;
+                case R.id.secondseating:
+                    availability.setText("availability for second seating");
+                    break;
+                default:
+                    availability.setText("Unable to fetch");
+                    break;
             }
         }
     }
