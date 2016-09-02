@@ -175,7 +175,7 @@
                                     android:textSize="17sp" />
 
                                 <custom_font.MyTextView
-                                    android:id="@+id/secondseating"
+                                    android:id="@+id/chaircar"
                                     android:layout_width="30dp"
                                     android:layout_height="30dp"
                                     android:layout_marginLeft="5dp"
@@ -186,7 +186,7 @@
                                     android:textSize="17sp" />
 
                                 <custom_font.MyTextView
-                                    android:id="@+id/chaircar"
+                                    android:id="@+id/secondseating"
                                     android:layout_width="30dp"
                                     android:layout_height="30dp"
                                     android:layout_marginLeft="5dp"
