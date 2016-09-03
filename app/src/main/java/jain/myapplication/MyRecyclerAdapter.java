@@ -8,21 +8,29 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.silencedut.expandablelayout.ExpandableLayout;
 
 import java.util.List;
 
+import jain.myapplication.model.Availability;
 import jain.myapplication.model.ClassType;
 import jain.myapplication.model.Train;
+import jain.myapplication.model.TrainAvailability;
+import jain.myapplication.rest.ApiClient;
+import jain.myapplication.rest.ApiInterface;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-/**
- * Created by harsh on 29-Aug-16.
- */
 public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.CustomViewHolder> {
 
     ClassType[] classTypes;
+    ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+    Call<TrainAvailability> call = null;
     private List<Train> trainList;
     private Context mContext;
 
@@ -100,10 +108,12 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Cu
     }
 
     public class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        protected TextView trainNumber, trainName, from, srcTime, to, destTime, firstac, secondac, thirdac, sleeper, secondseating, chaircar, availability;
+        protected TextView trainNumber, trainName, from, srcTime, to, destTime, firstac, secondac, thirdac, sleeper, secondseating, chaircar;
         protected ExpandableLayout expandableLayout;
         protected ImageView imageView;
         protected View previousView = null;
+        protected TextView availability;
+        protected ProgressBar progressBar;
 
         public CustomViewHolder(View view) {
             super(view);
@@ -121,7 +131,8 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Cu
             this.sleeper = (TextView) view.findViewById(R.id.sleeper);
             this.secondseating = (TextView) view.findViewById(R.id.secondseating);
             this.chaircar = (TextView) view.findViewById(R.id.chaircar);
-            this.availability = (TextView) view.findViewById(R.id.availability);
+            this.availability = (TextView) view.findViewById(R.id.available1);
+            this.progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
             expandableLayout.setEnabled(false);
 
             firstac.setOnClickListener(this);
@@ -134,45 +145,84 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Cu
 
         @Override
         public void onClick(View view) {
+            Boolean flag = true;
             view.setBackgroundResource(R.drawable.bg_blue);
             if (previousView == null || view == previousView) {
                 if (expandableLayout.isExpanded()) {
+                    flag = false;
                     expandableLayout.close();
                     view.setBackgroundResource(R.drawable.bg_red);
+                    if (call != null && call.isExecuted()) {
+                        call.cancel();
+                    }
                 } else {
                     expandableLayout.expand();
                 }
             }
             if (previousView != null && view != previousView) {
+                if (call != null && call.isExecuted()) {
+                    call.cancel();
+                }
                 previousView.setBackgroundResource(R.drawable.bg_red);
                 if (!expandableLayout.isExpanded()) {
                     expandableLayout.expand();
                 }
             }
             previousView = view;
-            switch (view.getId()) {
-                case R.id.firstac:
-                    availability.setText("availability for first ac");
-                    break;
-                case R.id.secondac:
-                    availability.setText("availability for second ac");
-                    break;
-                case R.id.thirdac:
-                    availability.setText("availability for third ac");
-                    break;
-                case R.id.sleeper:
-                    availability.setText("availability for sleeper");
-                    break;
-                case R.id.chaircar:
-                    availability.setText("availability for chair car");
-                    break;
-                case R.id.secondseating:
-                    availability.setText("availability for second seating");
-                    break;
-                default:
-                    availability.setText("Unable to fetch");
-                    break;
+            if (flag) {
+                switch (view.getId()) {
+                    case R.id.firstac:
+                        function("1A");
+                        break;
+                    case R.id.secondac:
+                        function("2A");
+                        break;
+                    case R.id.thirdac:
+                        function("3A");
+                        break;
+                    case R.id.sleeper:
+                        function("SL");
+                        break;
+                    case R.id.chaircar:
+                        function("CC");
+                        break;
+                    case R.id.secondseating:
+                        function("2S");
+                        break;
+                    default:
+                        availability.setText(R.string.error_text);
+                        break;
+                }
             }
+        }
+
+        void function(final String classtype) {
+            availability.setText("");
+            progressBar.setVisibility(View.VISIBLE);
+            call = apiService.getAvailabilityDetails(trainNumber.getText().toString(), from.getText().toString(), to.getText().toString(), MainActivity.date1, classtype, "GN");
+            call.enqueue(new Callback<TrainAvailability>() {
+                @Override
+                public void onResponse(Call<TrainAvailability> call, Response<TrainAvailability> response) {
+                    if (response.body().getResponse_code().equals("200")) {
+                        String s = "";
+                        Availability[] availabilities = response.body().getAvailability();
+                        for (Availability availability : availabilities) {
+                            s = s + availability.getDate() + "\t" + availability.getStatus() + "\n";
+                        }
+                        availability.setText(s);
+                        progressBar.setVisibility(View.GONE);
+                    } else {
+                        function(classtype);
+                        Toast.makeText(mContext, "Response Code:" + response.body().getResponse_code() + "\tFailure Rate:" + response.body().getFailure_rate(), Toast.LENGTH_LONG).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<TrainAvailability> call, Throwable t) {
+                    Toast.makeText(mContext, "Function failed to execute" + t.getMessage(), Toast.LENGTH_LONG).show();
+                    progressBar.setVisibility(View.GONE);
+                }
+            });
         }
     }
 }

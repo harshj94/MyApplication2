@@ -28,6 +28,7 @@ import java.util.Arrays;
 public class MainActivity extends AppCompatActivity implements CalendarDatePickerDialogFragment.OnDateSetListener {
 
     private static final String FRAG_TAG_DATE_PICKER = "fragment_date_picker_name";
+    public static String date1;
     EditText date;
     AutoCompleteTextView source, destination;
     Button getAvailability;
@@ -141,6 +142,7 @@ public class MainActivity extends AppCompatActivity implements CalendarDatePicke
             date_ = "0" + dayOfMonth + "";
         }
         date.setText(date_ + "-" + month);
+        date1 = date_ + "-" + month + "-" + year;
     }
 
     @Override

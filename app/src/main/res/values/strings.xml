@@ -3,6 +3,8 @@
 
     <!-- Sample menu -->
     <string name="action_settings">Settings</string>
+    <string name="shadow_of_card_view">Shadow of card view</string>
+    <string name="error_text">Unable to fetch data</string>
 
     <string-array name="station_codes">
         <item>A CABIN	ACAB</item>
